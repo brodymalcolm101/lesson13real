@@ -35,6 +35,7 @@ public class task {
         name = n;
     }
     
+    @Override
     public String toString(){
         String str = "";
        str += "Name: " + name;
