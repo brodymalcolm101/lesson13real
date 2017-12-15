@@ -37,10 +37,14 @@ public class task {
     
     @Override
     public String toString(){
-        String str = "";
-       str += "Name: " + name;
-       str += "\n Description: " + descrip;
-       return str;
+       return "Name: " + name + "\nDescription: " + descrip + "\n=======\n";
+    }
+    
+    public boolean validate() {
+        if(name == null || descrip == null || name.equals("") || descrip.equals(""))
+            return false;
+        else
+            return true;
     }
     
 }
