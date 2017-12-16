@@ -166,6 +166,11 @@ public class TaskManager extends javax.swing.JFrame {
         jMenu1.setText("Program");
 
         mnutasks.setText("Show All Task");
+        mnutasks.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnutasksActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnutasks);
 
         mnuexit.setText("Exit");
@@ -176,6 +181,11 @@ public class TaskManager extends javax.swing.JFrame {
         jMenu2.setText("Edit");
 
         mnureplace.setText("Replace this as current task");
+        mnureplace.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnureplaceActionPerformed(evt);
+            }
+        });
         jMenu2.add(mnureplace);
 
         mnuremove.setText("Remove current task");
@@ -272,7 +282,14 @@ public class TaskManager extends javax.swing.JFrame {
     }//GEN-LAST:event_txtnameActionPerformed
 
     private void btnnextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnextActionPerformed
-        // TODO add your handling code here:
+        if(curtask==tottask) return;
+        curtask++;
+        lblcurtask.setText("" + curtask);
+        li.next();
+        li.next();
+        t =(task)li.previous();
+        txtname.setText(t.getName());
+        txtdesc.setText(t.getDescription());
     }//GEN-LAST:event_btnnextActionPerformed
 
     private void btnfullbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfullbackActionPerformed
@@ -280,7 +297,36 @@ public class TaskManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnfullbackActionPerformed
 
     private void mnuremoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuremoveActionPerformed
-        // TODO add your handling code here:
+       if(tottask==0)return;
+       
+       li.next();
+       
+       li.remove();
+       
+       li.remove();
+       tottask--;
+       lbltottasks.setText(""+tottask);
+       
+       if(tottask==0){
+           txtname.setText("");
+           txtdesc.setText("");
+           curtask=0;
+           lblcurtask.setText("n/a");
+           return;
+       }
+       
+       else if(curtask>1){
+           t =(task)li.previous();
+           curtask--;
+           lblcurtask.setText("" + curtask);
+       }
+       
+       else{
+           li.next();
+           t=(task) li.previous();
+       }
+       txtname.setText(t.getName());
+       txtdesc.setText(t.getDescription());
     }//GEN-LAST:event_mnuremoveActionPerformed
 
     private void mnuclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuclearActionPerformed
@@ -315,8 +361,39 @@ public class TaskManager extends javax.swing.JFrame {
         curtask=tottask;
         
         lblcurtask.setText("" + curtask);
+        txtname.setText(t.getName());
+        txtdesc.setText(t.getDescription());
         
     }//GEN-LAST:event_btnforwardActionPerformed
+
+    private void mnureplaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnureplaceActionPerformed
+        if(tottask==0){
+            JOptionPane.showMessageDialog(this, "No task to replace this with, use insert instead");
+            return;
+        }
+        
+        String nm = txtname.getText();
+        String d = txtdesc.getText();
+        task t = new task(nm,d);
+        
+        if(t.validate()==false){
+            JOptionPane.showMessageDialog(this, "Error - Must enter all information");
+            return;
+        }
+        li.next();
+        li.set(t);
+        li.previous();
+        
+    }//GEN-LAST:event_mnureplaceActionPerformed
+
+    private void mnutasksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnutasksActionPerformed
+        String result = "";
+        for (int i = 0; i < list.size(); i++) {
+            t=(task)list.get(i);
+            result +="TASK " + (i+1) + ":\n" + t.toString() + "\n";
+        }
+        JOptionPane.showMessageDialog(this, result);
+    }//GEN-LAST:event_mnutasksActionPerformed
 
     /**
      * @param args the command line arguments
