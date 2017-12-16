@@ -121,6 +121,11 @@ public class TaskManager extends javax.swing.JFrame {
         });
 
         btnprevious.setText("<");
+        btnprevious.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnpreviousActionPerformed(evt);
+            }
+        });
 
         btnnext.setText(">");
         btnnext.addActionListener(new java.awt.event.ActionListener() {
@@ -212,6 +217,11 @@ public class TaskManager extends javax.swing.JFrame {
         jMenu3.setText("Insert");
 
         mnubefore.setText("Before Current Task");
+        mnubefore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnubeforeActionPerformed(evt);
+            }
+        });
         jMenu3.add(mnubefore);
 
         mnuafter.setText("After Current Task");
@@ -293,7 +303,16 @@ public class TaskManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnnextActionPerformed
 
     private void btnfullbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfullbackActionPerformed
-        // TODO add your handling code here:
+         if(curtask==tottask) return;
+        while(li.hasNext())
+            li.next();
+        t =(task)li.previous();
+        curtask=tottask;
+        
+        lblcurtask.setText("" + curtask);
+        txtname.setText(t.getName());
+        txtdesc.setText(t.getDescription());
+        
     }//GEN-LAST:event_btnfullbackActionPerformed
 
     private void mnuremoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuremoveActionPerformed
@@ -394,6 +413,39 @@ public class TaskManager extends javax.swing.JFrame {
         }
         JOptionPane.showMessageDialog(this, result);
     }//GEN-LAST:event_mnutasksActionPerformed
+
+    private void mnubeforeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnubeforeActionPerformed
+         String nm = txtname.getText();
+        String d = txtdesc.getText();
+        task t = new task(nm, d);
+        if(t.validate()==false){
+            JOptionPane.showMessageDialog(this, "Error - Must enter all information");
+            return;
+        }
+        if(tottask>0) li.next();
+        
+        
+        
+        li.add(t);
+        li.previous();
+        curtask--;
+        tottask++;
+        lbltottasks.setText("" + tottask);
+        lblcurtask.setText("" + curtask);
+        JOptionPane.showMessageDialog(this, "Task added");
+        
+    }//GEN-LAST:event_mnubeforeActionPerformed
+
+    private void btnpreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpreviousActionPerformed
+       if(curtask==tottask) return;
+        curtask--;
+        lblcurtask.setText("" + curtask);
+        li.previous();
+        li.previous();
+        t =(task)li.next();
+        txtname.setText(t.getName());
+        txtdesc.setText(t.getDescription());
+    }//GEN-LAST:event_btnpreviousActionPerformed
 
     /**
      * @param args the command line arguments
