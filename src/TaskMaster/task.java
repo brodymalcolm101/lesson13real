@@ -6,8 +6,8 @@ package TaskMaster;
 public class task {
     
     
-     static String name;
-    static String descrip;
+     private String name;
+    private String descrip;
     
     public task(){
         name = "";

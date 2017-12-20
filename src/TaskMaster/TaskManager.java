@@ -303,11 +303,14 @@ public class TaskManager extends javax.swing.JFrame {
     }//GEN-LAST:event_btnnextActionPerformed
 
     private void btnfullbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfullbackActionPerformed
-         if(curtask==tottask) return;
-        while(li.hasNext())
-            li.next();
+         if(curtask==0) {
+             return;
+         }
+        while(li.hasPrevious()){
         t =(task)li.previous();
-        curtask=tottask;
+        }
+        
+        curtask=1;
         
         lblcurtask.setText("" + curtask);
         txtname.setText(t.getName());
@@ -320,7 +323,7 @@ public class TaskManager extends javax.swing.JFrame {
        
        li.next();
        
-       li.remove();
+     
        
        li.remove();
        tottask--;
@@ -373,9 +376,13 @@ public class TaskManager extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuafterActionPerformed
 
     private void btnforwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnforwardActionPerformed
-        if(curtask==tottask) return;
-        while(li.hasNext())
-            li.next();
+        if(curtask==tottask) {
+            return;
+        }
+        while(li.hasNext()){
+             li.next();
+        }
+          
         t =(task)li.previous();
         curtask=tottask;
         
@@ -422,13 +429,18 @@ public class TaskManager extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error - Must enter all information");
             return;
         }
-        if(tottask>0) li.next();
+        if(tottask>0) {
+            li.previous();
+        }
         
         
         
         li.add(t);
         li.previous();
-        curtask--;
+        
+        if(curtask==0){
+            curtask++;
+        }
         tottask++;
         lbltottasks.setText("" + tottask);
         lblcurtask.setText("" + curtask);
@@ -437,12 +449,10 @@ public class TaskManager extends javax.swing.JFrame {
     }//GEN-LAST:event_mnubeforeActionPerformed
 
     private void btnpreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpreviousActionPerformed
-       if(curtask==tottask) return;
+       if(curtask==1) return;
         curtask--;
         lblcurtask.setText("" + curtask);
-        li.previous();
-        li.previous();
-        t =(task)li.next();
+        t = (task)li.previous(); 
         txtname.setText(t.getName());
         txtdesc.setText(t.getDescription());
     }//GEN-LAST:event_btnpreviousActionPerformed
